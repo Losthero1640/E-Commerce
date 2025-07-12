@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Plus, Minus, Leaf } from 'lucide-react';
+import { X, Plus, Minus, Award } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { CarbonRating } from './CarbonRating';
 import { CheckoutModal } from './CheckoutModal';
@@ -9,10 +9,6 @@ export const Cart = ({ isOpen, onClose }) => {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
   if (!isOpen) return null;
-
-  const totalEcoCoinsEarned = items.reduce((sum, item) => 
-    sum + (item.product ? Math.floor(item.product.price * item.product.carbon_rating * item.quantity) : 0), 0
-  );
 
   const handleCheckout = () => {
     setIsCheckoutOpen(true);
@@ -92,19 +88,19 @@ export const Cart = ({ isOpen, onClose }) => {
             {/* Footer */}
             {items.length > 0 && (
               <div className="border-t p-6 space-y-4">
-                {/* EcoCoins */}
-                <div className="flex items-center justify-between bg-green-50 p-3 rounded-lg">
-                  <div className="flex items-center space-x-2">
-                    <Leaf className="w-4 h-4 text-green-600" />
-                    <span className="text-green-700 font-medium">EcoCoins Earned:</span>
-                  </div>
-                  <span className="text-green-600 font-bold">+{totalEcoCoinsEarned}</span>
-                </div>
-
                 {/* Total */}
                 <div className="flex items-center justify-between text-lg font-semibold">
                   <span>Total:</span>
                   <span>${total.toFixed(2)}</span>
+                </div>
+
+                {/* Carbon Credits Info */}
+                <div className="flex items-center justify-between bg-emerald-50 p-3 rounded-lg">
+                  <div className="flex items-center space-x-2">
+                    <Award className="w-4 h-4 text-emerald-600" />
+                    <span className="text-emerald-700 font-medium">Earn Credits:</span>
+                  </div>
+                  <span className="text-emerald-600 font-bold">Through Carbon Offsetting</span>
                 </div>
 
                 {/* Buttons */}

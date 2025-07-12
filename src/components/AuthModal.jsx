@@ -29,20 +29,16 @@ export const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
           password: formData.password
         });
 
-        if (error) throw error;
-        
-        if (data.user) {
-          onAuthSuccess(data.user);
-          onClose();
-        }
-      } else {
-        const { data, error } = await supabase.auth.signUp({
-          email: formData.email,
-          password: formData.password,
-          options: {
-            data: {
-              full_name: formData.fullName
-            }
+
+            // Create user profile (removed eco_coins, only carbon_credits)
+            const { error: profileError } = await supabase
+              .from('users')
+              .insert([{
+                id: data.user.id,
+                email: data.user.email,
+                full_name: formData.fullName,
+                carbon_credits: 0 // Start with 0, earn through offsetting
+              }]);
           }
         });
 
@@ -159,8 +155,8 @@ export const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
             {!isLogin && (
               <div className="bg-green-50 p-3 rounded-lg border border-green-200">
                 <div className="flex items-center space-x-2">
-                  <Leaf className="w-4 h-4 text-green-600" />
-                  <span className="text-green-700 text-sm font-medium">Welcome Bonus: +100 EcoCoins!</span>
+                  <Award className="w-4 h-4 text-emerald-600" />
+                  <span className="text-emerald-700 text-sm font-medium">Start earning Carbon Credits through offsetting!</span>
                 </div>
               </div>
             )}

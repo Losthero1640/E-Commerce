@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
-import { X, CreditCard, Truck, Shield, Leaf, CheckCircle, Heart, Award } from 'lucide-react';
+import { X, CreditCard, Truck, Shield, CheckCircle, Heart, Award, AlertTriangle, AlertCircle } from 'lucide-react';
 import { useCart } from '../contexts/CartContext';
 import { useUser } from '../contexts/UserContext';
 import { CarbonOffsetBenefits } from './CarbonOffsetBenefits';
 
 export const CheckoutModal = ({ isOpen, onClose }) => {
   const { items, total, clearCart } = useCart();
-  const { addEcoCoins, addCarbonCredits } = useUser();
+  const { addCarbonCredits } = useUser();
   const [isProcessing, setIsProcessing] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
-  const [earnedEcoCoins, setEarnedEcoCoins] = useState(0);
   const [earnedCarbonCredits, setEarnedCarbonCredits] = useState(0);
   const [carbonOffsetTip, setCarbonOffsetTip] = useState(0);
   const [showCarbonOffset, setShowCarbonOffset] = useState(false);
@@ -23,10 +22,6 @@ export const CheckoutModal = ({ isOpen, onClose }) => {
     expiryDate: '12/25',
     cvv: '123'
   });
-
-  const totalEcoCoinsEarned = items.reduce((sum, item) => 
-    sum + (item.product ? Math.floor(item.product.price * item.product.carbon_rating * item.quantity) : 0), 0
-  );
   
   // Calculate total CO2 emissions for the order
   const totalCO2Emissions = items.reduce((sum, item) => {
@@ -37,12 +32,74 @@ export const CheckoutModal = ({ isOpen, onClose }) => {
   // Calculate carbon credits earned (10 credits per 100 Rs spent on offsetting)
   const carbonCreditsEarned = Math.floor(carbonOffsetTip / 10);
 
-  // Calculate if there are low carbon rating items (< 4.0)
-  const lowCarbonItems = items.filter(item => item.product && item.product.carbon_rating < 4.0);
-  const hasLowCarbonItems = lowCarbonItems.length > 0;
+  // Analyze cart for carbon impact
+  const cartAnalysis = items.reduce((analysis, item) => {
+    const rating = item.product?.carbon_rating || 0;
+    if (rating < 3.0) {
+      analysis.highImpact.push(item);
+    } else if (rating < 4.0) {
+      analysis.moderateImpact.push(item);
+    } else {
+      analysis.lowImpact.push(item);
+    }
+    return analysis;
+  }, { highImpact: [], moderateImpact: [], lowImpact: [] });
 
-  // Suggested tip amounts based on low carbon items
-  const suggestedTips = [5, 10, 15, 25];
+  const hasHighImpactItems = cartAnalysis.highImpact.length > 0;
+  const hasModerateImpactItems = cartAnalysis.moderateImpact.length > 0;
+
+  // Suggested tip amounts based on cart impact
+  const getSuggestedTips = () => {
+    if (hasHighImpactItems) {
+      return [25, 50, 75, 100]; // Higher suggestions for high impact items
+    } else if (hasModerateImpactItems) {
+      return [15, 25, 35, 50]; // Moderate suggestions
+    } else {
+      return [5, 10, 15, 25]; // Lower suggestions for eco-friendly items
+    }
+  };
+
+  const suggestedTips = getSuggestedTips();
+
+  const getOffsetUrgencyInfo = () => {
+    if (hasHighImpactItems) {
+      return {
+        color: 'red',
+        bgColor: 'bg-red-50',
+        borderColor: 'border-red-200',
+        textColor: 'text-red-700',
+        icon: AlertTriangle,
+        title: 'High Carbon Impact Items Detected',
+        message: 'Your cart contains items with high carbon emissions. We strongly recommend offsetting to neutralize the environmental impact.',
+        buttonColor: 'bg-red-600 hover:bg-red-700'
+      };
+    } else if (hasModerateImpactItems) {
+      return {
+        color: 'yellow',
+        bgColor: 'bg-yellow-50',
+        borderColor: 'border-yellow-200',
+        textColor: 'text-yellow-700',
+        icon: AlertCircle,
+        title: 'Moderate Carbon Impact',
+        message: 'Some items in your cart have moderate carbon emissions. Consider offsetting to reduce your environmental footprint.',
+        buttonColor: 'bg-yellow-600 hover:bg-yellow-700'
+      };
+    } else {
+      return {
+        color: 'blue',
+        bgColor: 'bg-blue-50',
+        borderColor: 'border-blue-200',
+        textColor: 'text-blue-700',
+        icon: Heart,
+        title: 'Great Eco-Friendly Choices!',
+        message: 'Your cart contains eco-friendly items. You can still contribute to carbon offsetting to make an even bigger positive impact.',
+        buttonColor: 'bg-blue-600 hover:bg-blue-700'
+      };
+    }
+  };
+
+  const offsetInfo = getOffsetUrgencyInfo();
+  const OffsetIcon = offsetInfo.icon;
 
   const handleInputChange = (e) => {
     setFormData({
@@ -59,17 +116,12 @@ export const CheckoutModal = ({ isOpen, onClose }) => {
     e.preventDefault();
     setIsProcessing(true);
 
-    // Store the earned EcoCoins amount BEFORE clearing the cart
-    const coinsToEarn = totalEcoCoinsEarned;
+    // Store the earned carbon credits amount BEFORE clearing the cart
     const creditsToEarn = carbonCreditsEarned;
-    setEarnedEcoCoins(coinsToEarn);
     setEarnedCarbonCredits(creditsToEarn);
 
     // Simulate payment processing
     await new Promise(resolve => setTimeout(resolve, 2000));
-
-    // Add EcoCoins to user account
-    addEcoCoins(coinsToEarn);
     
     // Add Carbon Credits if offset was paid
     if (creditsToEarn > 0) {
@@ -84,7 +136,6 @@ export const CheckoutModal = ({ isOpen, onClose }) => {
     // Auto close after 5 seconds
     setTimeout(() => {
       setIsComplete(false);
-      setEarnedEcoCoins(0);
       setCarbonOffsetTip(0);
       setShowCarbonOffset(false);
       onClose();
@@ -93,8 +144,6 @@ export const CheckoutModal = ({ isOpen, onClose }) => {
 
   const handleClose = () => {
     setIsComplete(false);
-    setEarnedEcoCoins(0);
-    setEarnedCarbonCredits(0);
     setEarnedCarbonCredits(0);
     setCarbonOffsetTip(0);
     setShowCarbonOffset(false);
@@ -113,16 +162,7 @@ export const CheckoutModal = ({ isOpen, onClose }) => {
           <div className="bg-white rounded-lg p-8 max-w-md w-full text-center animate-slide-in-right">
             <CheckCircle className="w-16 h-16 text-green-600 mx-auto mb-4" />
             <h2 className="text-2xl font-bold text-gray-900 mb-2">Order Complete!</h2>
-            <p className="text-gray-600 mb-4">Thank you for your eco-friendly purchase!</p>
-            
-            <div className="bg-green-50 p-4 rounded-lg mb-4 border border-green-200">
-              <div className="flex items-center justify-center space-x-2 mb-2">
-                <Leaf className="w-5 h-5 text-green-600" />
-                <span className="text-green-700 font-medium">EcoCoins Earned!</span>
-              </div>
-              <span className="text-3xl font-bold text-green-600">+{earnedEcoCoins}</span>
-              <p className="text-sm text-green-600 mt-1">Added to your account</p>
-            </div>
+            <p className="text-gray-600 mb-4">Thank you for your eco-conscious purchase!</p>
 
             {earnedCarbonCredits > 0 && (
               <div className="bg-emerald-50 p-4 rounded-lg mb-4 border border-emerald-200">
@@ -193,8 +233,8 @@ export const CheckoutModal = ({ isOpen, onClose }) => {
                     <span>${total.toFixed(2)}</span>
                   </div>
                   {carbonOffsetTip > 0 && (
-                    <div className="flex justify-between text-sm text-blue-600">
-                      <span>Carbon Offset Tip</span>
+                    <div className="flex justify-between text-sm text-emerald-600">
+                      <span>Carbon Offset Contribution</span>
                       <span>+${carbonOffsetTip.toFixed(2)}</span>
                     </div>
                   )}
@@ -203,20 +243,6 @@ export const CheckoutModal = ({ isOpen, onClose }) => {
                     <span>${finalTotal.toFixed(2)}</span>
                   </div>
                 </div>
-              </div>
-              
-              {/* EcoCoins Reward */}
-              <div className="mt-4 bg-green-50 p-3 rounded-lg border border-green-200">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <Leaf className="w-4 h-4 text-green-600" />
-                    <span className="text-green-700 font-medium">You'll earn:</span>
-                  </div>
-                  <span className="text-green-600 font-bold text-lg">+{totalEcoCoinsEarned} EcoCoins</span>
-                </div>
-                <p className="text-xs text-green-600 mt-1">
-                  Based on carbon rating × price for each item
-                </p>
               </div>
               
               {/* CO2 Emissions Info */}
@@ -235,77 +261,85 @@ export const CheckoutModal = ({ isOpen, onClose }) => {
             </div>
 
             {/* Carbon Offset Section */}
-            <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-              <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
-                <div className="flex items-start space-x-3">
-                  <Heart className="w-5 h-5 text-orange-600 mt-0.5" />
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-orange-800 mb-2">
-                      Help Us Offset Carbon Emissions
-                    </h3>
-                    <p className="text-sm text-orange-700 mb-3">
-                      Some items in your cart have lower carbon ratings. Would you like to contribute 
-                      to carbon offsetting projects to help neutralize the environmental impact?
-                    </p>
-                    
-                    {!showCarbonOffset ? (
-                      <button
-                        type="button"
-                        onClick={() => setShowCarbonOffset(true)}
-                        className="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-                      >
-                        Yes, I'd like to contribute
-                      </button>
-                    ) : (
-                      <div className="space-y-3">
-                        <p className="text-sm text-orange-700 font-medium">Choose your contribution:</p>
-                        <div className="grid grid-cols-2 gap-2">
-                          {suggestedTips.map((amount) => (
-                            <button
-                              key={amount}
-                              type="button"
-                              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                                carbonOffsetTip === amount
-                                  ? 'bg-orange-600 text-white'
-                                  : 'bg-white border border-orange-300 text-orange-700 hover:bg-orange-100'
-                              }`}
-                              onClick={() => handleCarbonOffsetChange(amount)}
-                            >
-                              ${amount}
-                            </button>
-                          ))}
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <input
-                            type="number"
-                            min="0"
-                            step="0.01"
-                            value={carbonOffsetTip}
-                            onChange={(e) => handleCarbonOffsetChange(parseFloat(e.target.value) || 0)}
-                            className="flex-1 p-2 border border-orange-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                          />
+            <div className={`${offsetInfo.bgColor} p-4 rounded-lg ${offsetInfo.borderColor} border`}>
+              <div className="flex items-start space-x-3">
+                <OffsetIcon className={`w-5 h-5 ${offsetInfo.textColor} mt-0.5`} />
+                <div className="flex-1">
+                  <h3 className={`font-semibold ${offsetInfo.textColor} mb-2`}>
+                    {offsetInfo.title}
+                  </h3>
+                  <p className={`text-sm ${offsetInfo.textColor} mb-3`}>
+                    {offsetInfo.message}
+                  </p>
+                  
+                  {!showCarbonOffset ? (
+                    <button
+                      type="button"
+                      onClick={() => setShowCarbonOffset(true)}
+                      className={`${offsetInfo.buttonColor} text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors`}
+                    >
+                      {hasHighImpactItems ? 'Offset High Impact Items' : 
+                       hasModerateImpactItems ? 'Offset Carbon Emissions' : 
+                       'Contribute to Offsetting'}
+                    </button>
+                  ) : (
+                    <div className="space-y-3">
+                      <p className={`text-sm ${offsetInfo.textColor} font-medium`}>Choose your contribution:</p>
+                      <div className="grid grid-cols-2 gap-2">
+                        {suggestedTips.map((amount) => (
                           <button
+                            key={amount}
                             type="button"
-                            onClick={() => {
-                              setCarbonOffsetTip(0);
-                              setShowCarbonOffset(false);
-                            }}
-                            className="text-orange-600 hover:text-orange-700 text-sm"
+                            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                              carbonOffsetTip === amount
+                                ? `${offsetInfo.buttonColor} text-white`
+                                : `bg-white border ${offsetInfo.borderColor} ${offsetInfo.textColor} hover:bg-opacity-50`
+                            }`}
+                            onClick={() => handleCarbonOffsetChange(amount)}
                           >
-                            Skip
+                            ${amount}
                           </button>
-                        </div>
-                        {carbonOffsetTip > 0 && (
-                          <div className="space-y-2">
-                            <p className="text-xs text-orange-600">
+                        ))}
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <input
+                          type="number"
+                          min="0"
+                          step="0.01"
+                          value={carbonOffsetTip}
+                          onChange={(e) => handleCarbonOffsetChange(parseFloat(e.target.value) || 0)}
+                          className={`flex-1 p-2 border ${offsetInfo.borderColor} rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 focus:border-transparent`}
+                          placeholder="Custom amount"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setCarbonOffsetTip(0);
+                            setShowCarbonOffset(false);
+                          }}
+                          className={`${offsetInfo.textColor} hover:opacity-70 text-sm`}
+                        >
+                          Skip
+                        </button>
+                      </div>
+                      {carbonOffsetTip > 0 && (
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <p className={`text-xs ${offsetInfo.textColor}`}>
                               Your ${carbonOffsetTip.toFixed(2)} contribution will support:
                             </p>
-                            <CarbonOffsetBenefits offsetAmount={carbonOffsetTip} />
+                            <div className="flex items-center space-x-1">
+                              <Award className="w-3 h-3 text-emerald-600" />
+                              <span className="text-xs text-emerald-600 font-medium">
+                                +{carbonCreditsEarned} Credits
+                              </span>
+                            </div>
                           </div>
-                        )}
-                      </div>
-                    )}
-                  </div>
+                          <CarbonOffsetBenefits offsetAmount={carbonOffsetTip} />
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

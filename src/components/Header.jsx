@@ -7,7 +7,7 @@ import { RewardsModal } from './RewardsModal';
 
 export const Header = ({ onCartClick }) => {
   const { itemCount } = useCart();
-  const { ecoCoins, carbonCredits, user, logout } = useUser();
+  const { carbonCredits, user, logout } = useUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -65,18 +65,8 @@ export const Header = ({ onCartClick }) => {
 
             {/* Right Section */}
             <div className="flex items-center space-x-6">
-              {/* EcoCoins */}
+              {/* Carbon Credits */}
               <div className="hidden sm:flex items-center space-x-3">
-                <button 
-                  onClick={() => setIsRewardsModalOpen(true)}
-                  className="flex items-center space-x-2 bg-green-50 hover:bg-green-100 px-3 py-1 rounded-full transition-colors group"
-                >
-                  <Leaf className="w-4 h-4 text-green-600" />
-                  <span className="text-green-700 font-medium">{ecoCoins.toLocaleString()}</span>
-                  <span className="text-green-600 text-sm">EcoCoins</span>
-                  <Gift className="w-3 h-3 text-green-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </button>
-                
                 <button 
                   onClick={() => setIsRewardsModalOpen(true)}
                   className="flex items-center space-x-2 bg-emerald-50 hover:bg-emerald-100 px-3 py-1 rounded-full transition-colors group"
@@ -84,6 +74,7 @@ export const Header = ({ onCartClick }) => {
                   <Award className="w-4 h-4 text-emerald-600" />
                   <span className="text-emerald-700 font-medium">{carbonCredits.toLocaleString()}</span>
                   <span className="text-emerald-600 text-sm">Credits</span>
+                  <Gift className="w-3 h-3 text-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </button>
               </div>
 
@@ -161,21 +152,12 @@ export const Header = ({ onCartClick }) => {
                 <div className="space-y-2">
                   <button 
                     onClick={() => setIsRewardsModalOpen(true)}
-                    className="flex items-center space-x-2 bg-green-50 hover:bg-green-100 px-3 py-2 rounded-full w-fit transition-colors"
-                  >
-                    <Leaf className="w-4 h-4 text-green-600" />
-                    <span className="text-green-700 font-medium">{ecoCoins.toLocaleString()}</span>
-                    <span className="text-green-600 text-sm">EcoCoins</span>
-                    <Gift className="w-3 h-3 text-green-500" />
-                  </button>
-                  
-                  <button 
-                    onClick={() => setIsRewardsModalOpen(true)}
                     className="flex items-center space-x-2 bg-emerald-50 hover:bg-emerald-100 px-3 py-2 rounded-full w-fit transition-colors"
                   >
                     <Award className="w-4 h-4 text-emerald-600" />
                     <span className="text-emerald-700 font-medium">{carbonCredits.toLocaleString()}</span>
                     <span className="text-emerald-600 text-sm">Credits</span>
+                    <Gift className="w-3 h-3 text-emerald-500" />
                   </button>
                 </div>
                 
