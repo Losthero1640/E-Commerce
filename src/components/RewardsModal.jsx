@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { X, Gift, Percent, Truck, Star, Leaf, Check } from 'lucide-react';
+import { X, Gift, Percent, Truck, Star, Leaf, Check, Award } from 'lucide-react';
 import { useUser } from '../contexts/UserContext';
 
 export const RewardsModal = ({ isOpen, onClose, onRewardRedeemed }) => {
-  const { ecoCoins, spendEcoCoins } = useUser();
+  const { ecoCoins, carbonCredits, spendEcoCoins, spendCarbonCredits } = useUser();
   const [redeemedRewards, setRedeemedRewards] = useState([]);
 
   const rewards = [
@@ -66,12 +66,52 @@ export const RewardsModal = ({ isOpen, onClose, onRewardRedeemed }) => {
       value: 'bundle',
       icon: Gift,
       color: 'emerald'
+    },
+    {
+      id: 'carbon-discount-20',
+      title: '20% Off with Carbon Credits',
+      description: 'Use carbon credits for 20% discount on eco-friendly products',
+      cost: 50,
+      type: 'carbon-discount',
+      value: 20,
+      icon: Award,
+      color: 'emerald',
+      currency: 'credits'
+    },
+    {
+      id: 'carbon-shipping',
+      title: 'Free Carbon-Neutral Shipping',
+      description: 'Free shipping with carbon offset included',
+      cost: 30,
+      type: 'carbon-shipping',
+      value: 'free',
+      icon: Truck,
+      color: 'emerald',
+      currency: 'credits'
+    },
+    {
+      id: 'tree-planting',
+      title: 'Plant 10 Trees',
+      description: 'Fund tree planting in your name',
+      cost: 100,
+      type: 'environmental',
+      value: '10-trees',
+      icon: Leaf,
+      color: 'emerald',
+      currency: 'credits'
     }
   ];
 
   const handleRedeem = (reward) => {
-    if (ecoCoins >= reward.cost && !redeemedRewards.includes(reward.id)) {
-      const success = spendEcoCoins(reward.cost);
+    const canAfford = reward.currency === 'credits' 
+      ? carbonCredits >= reward.cost 
+      : ecoCoins >= reward.cost;
+      
+    if (canAfford && !redeemedRewards.includes(reward.id)) {
+      const success = reward.currency === 'credits' 
+        ? spendCarbonCredits(reward.cost)
+        : spendEcoCoins(reward.cost);
+        
       if (success) {
         setRedeemedRewards([...redeemedRewards, reward.id]);
         if (onRewardRedeemed) {
@@ -143,12 +183,24 @@ export const RewardsModal = ({ isOpen, onClose, onRewardRedeemed }) => {
 
           <div className="p-6">
             {/* Balance */}
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
-              <div className="flex items-center justify-center space-x-3">
-                <Leaf className="w-6 h-6 text-green-600" />
-                <div className="text-center">
-                  <p className="text-green-700 font-medium">Your EcoCoins Balance</p>
-                  <p className="text-3xl font-bold text-green-600">{ecoCoins.toLocaleString()}</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                <div className="flex items-center justify-center space-x-3">
+                  <Leaf className="w-6 h-6 text-green-600" />
+                  <div className="text-center">
+                    <p className="text-green-700 font-medium">EcoCoins Balance</p>
+                    <p className="text-3xl font-bold text-green-600">{ecoCoins.toLocaleString()}</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4">
+                <div className="flex items-center justify-center space-x-3">
+                  <Award className="w-6 h-6 text-emerald-600" />
+                  <div className="text-center">
+                    <p className="text-emerald-700 font-medium">Carbon Credits</p>
+                    <p className="text-3xl font-bold text-emerald-600">{carbonCredits.toLocaleString()}</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -156,9 +208,14 @@ export const RewardsModal = ({ isOpen, onClose, onRewardRedeemed }) => {
             {/* Rewards Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {rewards.map((reward) => {
-                const canAfford = ecoCoins >= reward.cost;
+                const canAfford = reward.currency === 'credits' 
+                  ? carbonCredits >= reward.cost 
+                  : ecoCoins >= reward.cost;
                 const isRedeemed = redeemedRewards.includes(reward.id);
                 const IconComponent = reward.icon;
+                const currentBalance = reward.currency === 'credits' ? carbonCredits : ecoCoins;
+                const currencyIcon = reward.currency === 'credits' ? Award : Leaf;
+                const currencyColor = reward.currency === 'credits' ? 'text-emerald-600' : 'text-green-600';
 
                 return (
                   <div
@@ -185,9 +242,12 @@ export const RewardsModal = ({ isOpen, onClose, onRewardRedeemed }) => {
 
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
-                        <Leaf className="w-4 h-4 text-green-600" />
-                        <span className="font-bold text-green-600">
+                        <currencyIcon className={`w-4 h-4 ${currencyColor}`} />
+                        <span className={`font-bold ${currencyColor}`}>
                           {reward.cost.toLocaleString()}
+                        </span>
+                        <span className={`text-xs ${currencyColor}`}>
+                          {reward.currency === 'credits' ? 'Credits' : 'EcoCoins'}
                         </span>
                       </div>
                       
@@ -207,7 +267,7 @@ export const RewardsModal = ({ isOpen, onClose, onRewardRedeemed }) => {
                     {!canAfford && !isRedeemed && (
                       <div className="mt-3 pt-3 border-t border-gray-100">
                         <p className="text-xs text-gray-500">
-                          Need {(reward.cost - ecoCoins).toLocaleString()} more EcoCoins
+                          Need {(reward.cost - currentBalance).toLocaleString()} more {reward.currency === 'credits' ? 'Credits' : 'EcoCoins'}
                         </p>
                       </div>
                     )}
@@ -218,19 +278,33 @@ export const RewardsModal = ({ isOpen, onClose, onRewardRedeemed }) => {
 
             {/* How to Earn More */}
             <div className="mt-8 bg-blue-50 border border-blue-200 rounded-lg p-6">
-              <h3 className="font-semibold text-blue-800 mb-3">How to Earn More EcoCoins</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                  <span className="text-blue-700">Purchase eco-friendly products</span>
+              <h3 className="font-semibold text-blue-800 mb-3">How to Earn More Rewards</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-medium text-blue-700 mb-2">EcoCoins</h4>
+                  <div className="space-y-1 text-sm">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-2 h-2 bg-green-600 rounded-full"></div>
+                      <span className="text-blue-700">Purchase eco-friendly products</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <div className="w-2 h-2 bg-green-600 rounded-full"></div>
+                      <span className="text-blue-700">Choose high carbon-rated items</span>
+                    </div>
+                  </div>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                  <span className="text-blue-700">Choose high carbon-rated items</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                  <span className="text-blue-700">Complete your profile</span>
+                  <h4 className="font-medium text-blue-700 mb-2">Carbon Credits</h4>
+                  <div className="space-y-1 text-sm">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-2 h-2 bg-emerald-600 rounded-full"></div>
+                      <span className="text-blue-700">Pay for carbon offsetting</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <div className="w-2 h-2 bg-emerald-600 rounded-full"></div>
+                      <span className="text-blue-700">10 credits per ₹100 spent</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

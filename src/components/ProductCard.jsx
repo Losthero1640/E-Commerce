@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShoppingCart, Plus } from 'lucide-react';
+import { ShoppingCart, Plus, Truck } from 'lucide-react';
 import { CarbonRating } from './CarbonRating';
 import { useCart } from '../contexts/CartContext';
 import { AlternativeSuggestions } from './AlternativeSuggestions';
@@ -61,6 +61,18 @@ export const ProductCard = ({ product }) => {
             <CarbonRating rating={product.carbon_rating} />
             <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
               {product.category}
+            </span>
+          </div>
+          
+          {/* CO2 Emission Info */}
+          <div className="flex items-center space-x-2 mt-2">
+            <Truck className="w-3 h-3 text-gray-400" />
+            <span className="text-xs text-gray-500">
+              {product.co2_emission_grams || (product.weight_grams || 150) * 0.1}g CO₂ shipping
+            </span>
+            <span className="text-xs text-gray-400">•</span>
+            <span className="text-xs text-gray-500">
+              {product.weight_grams || 150}g
             </span>
           </div>
         </div>
