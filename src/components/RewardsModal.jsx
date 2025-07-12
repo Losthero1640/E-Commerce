@@ -351,11 +351,15 @@ export const RewardsModal = ({ isOpen, onClose, onRewardRedeemed }) => {
                 </div>
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-emerald-600 rounded-full"></div>
-                  <span className="text-blue-700">Earn 10 credits for every ₹100 spent on offsetting</span>
+                  <span className="text-blue-700">Earn 10 credits for every $10 spent on offsetting</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-emerald-600 rounded-full"></div>
-                  <span className="text-blue-700">Higher contributions for items with lower carbon ratings</span>
+                  <span className="text-blue-700">Bonus credits for offsetting high-impact items</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-emerald-600 rounded-full"></div>
+                  <span className="text-blue-700">Refer friends and earn 50 credits per successful referral</span>
                 </div>
               </div>
             </div>
