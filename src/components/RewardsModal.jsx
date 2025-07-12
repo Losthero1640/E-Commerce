@@ -1,5 +1,17 @@
 import React, { useState } from 'react';
-import { X, Gift, Percent, Truck, Star, Leaf, Check, Award } from 'lucide-react';
+import {
+  X,
+  Gift,
+  Percent,
+  Truck,
+  Star,
+  Leaf,
+  Check,
+  Award,
+  User,
+  Shield,
+  Users,
+} from "lucide-react";
 import { useUser } from '../contexts/UserContext';
 
 export const RewardsModal = ({ isOpen, onClose, onRewardRedeemed }) => {
