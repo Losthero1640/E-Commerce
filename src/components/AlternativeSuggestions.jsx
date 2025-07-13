@@ -272,7 +272,7 @@ export const AlternativeSuggestions = ({
                               </div>
                               <div className="flex items-center space-x-2">
                                 <span className="text-lg font-bold text-gray-900">
-                                  ${alternative.price.toFixed(2)}
+                                  ₹{alternative.price.toFixed(2)}
                                 </span>
                                 <div className="flex items-center space-x-1 text-green-600 text-sm">
                                   <ArrowRight className="w-3 h-3" />

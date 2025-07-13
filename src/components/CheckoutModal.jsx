@@ -181,7 +181,7 @@ export const CheckoutModal = ({ isOpen, onClose }) => {
                   <Heart className="w-5 h-5 text-blue-600" />
                   <span className="text-blue-700 font-medium">Carbon Offset Contribution</span>
                 </div>
-                <span className="text-2xl font-bold text-blue-600">${carbonOffsetTip.toFixed(2)}</span>
+                <span className="text-2xl font-bold text-blue-600">₹{carbonOffsetTip.toFixed(2)}</span>
                 <p className="text-sm text-blue-600 mt-1">Thank you for helping offset carbon emissions!</p>
               </div>
             )}
