@@ -23,7 +23,7 @@ export const AlternativeSuggestions = ({
         name: 'Premium Organic Skincare Set',
         description: 'Advanced organic skincare with certified sustainable ingredients',
         price: 94.99,
-        image_url: 'https://images.pexels.com/photos/6621337/pexels-photo-6621337.jpeg?auto=compress&cs=tinysrgb&w=500',
+        image_url: 'https://images.pexels.com/photos/4465831/pexels-photo-4465831.jpeg?auto=compress&cs=tinysrgb&w=500',
         category: 'Beauty',
         carbon_rating: 4.8,
         stock_quantity: 20
@@ -33,7 +33,7 @@ export const AlternativeSuggestions = ({
         name: 'Zero-Waste Beauty Bundle',
         description: 'Complete zero-waste beauty routine with refillable containers',
         price: 79.99,
-        image_url: 'https://images.pexels.com/photos/4465124/pexels-photo-4465124.jpeg?auto=compress&cs=tinysrgb&w=500',
+        image_url: 'https://images.pexels.com/photos/6621337/pexels-photo-6621337.jpeg?auto=compress&cs=tinysrgb&w=500',
         category: 'Beauty',
         carbon_rating: 4.9,
         stock_quantity: 15
@@ -45,7 +45,7 @@ export const AlternativeSuggestions = ({
         name: 'Solar LED Smart Bulb Pro',
         description: 'Advanced LED bulb with solar charging capability',
         price: 34.99,
-        image_url: 'https://images.pexels.com/photos/1036936/pexels-photo-1036936.jpeg?auto=compress&cs=tinysrgb&w=500',
+        image_url: 'https://images.pexels.com/photos/1112598/pexels-photo-1112598.jpeg?auto=compress&cs=tinysrgb&w=500',
         category: 'Electronics',
         carbon_rating: 4.6,
         stock_quantity: 25
@@ -67,7 +67,7 @@ export const AlternativeSuggestions = ({
         name: 'Premium Glass Container Set',
         description: 'High-quality borosilicate glass containers with bamboo lids',
         price: 42.99,
-        image_url: 'https://images.pexels.com/photos/4113892/pexels-photo-4113892.jpeg?auto=compress&cs=tinysrgb&w=500',
+        image_url: 'https://images.pexels.com/photos/6489663/pexels-photo-6489663.jpeg?auto=compress&cs=tinysrgb&w=500',
         category: 'Kitchen',
         carbon_rating: 4.7,
         stock_quantity: 35
@@ -79,7 +79,7 @@ export const AlternativeSuggestions = ({
         name: 'Solar-Powered Calculator Pro',
         description: 'Advanced solar calculator with recycled materials and long battery life',
         price: 28.99,
-        image_url: 'https://images.pexels.com/photos/6238297/pexels-photo-6238297.jpeg?auto=compress&cs=tinysrgb&w=500',
+        image_url: 'https://images.pexels.com/photos/163064/play-stone-network-networked-interactive-163064.jpeg?auto=compress&cs=tinysrgb&w=500',
         category: 'Office',
         carbon_rating: 4.5,
         stock_quantity: 20
