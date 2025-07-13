@@ -61,7 +61,7 @@ export const CheckoutModal = ({ isOpen, onClose }) => {
 
   const suggestedTips = getSuggestedTips();
 
-  const getOffsetUrgencyInfo = () => {
+const getOffsetUrgencyInfo = () => {
     if (hasHighImpactItems) {
       return {
         color: "red",
