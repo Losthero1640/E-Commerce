@@ -47,7 +47,8 @@ export const Cart = ({ isOpen, onClose }) => {
                       
                       <div className="flex-1">
                         <h3 className="font-medium text-gray-900">{item.product?.name}</h3>
-                        <div className="mt-1">
+                        <div className="mt-1 space-y-1">
+                          <div className="text-xs text-gray-500">Carbon Footprint</div>
                           <CarbonRating rating={item.product?.carbon_rating || 0} size="sm" />
                         </div>
                         <p className="text-green-600 font-semibold">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Star } from 'lucide-react';
+import { Leaf } from 'lucide-react';
 
 export const CarbonRating = ({ 
   rating, 
@@ -16,21 +16,21 @@ export const CarbonRating = ({
     }
   };
 
-  const getStarColor = (starIndex) => {
-    const fillLevel = clampedRating - starIndex;
+  const getLeafColor = (leafIndex) => {
+    const fillLevel = clampedRating - leafIndex;
     
     if (fillLevel <= 0) {
-      // Empty star - red
-      return 'text-red-500';
+      // Empty leaf - red for low eco-friendliness
+      return 'text-red-400';
     } else if (fillLevel >= 1) {
-      // Full star - gradient from red to green based on rating
+      // Full leaf - gradient from red to green based on rating
       const greenIntensity = Math.min(clampedRating / 5, 1);
       if (greenIntensity < 0.4) return 'text-red-500';
       if (greenIntensity < 0.6) return 'text-orange-500';
       if (greenIntensity < 0.8) return 'text-yellow-500';
       return 'text-green-500';
     } else {
-      // Partial star
+      // Partial leaf
       const greenIntensity = Math.min(clampedRating / 5, 1);
       if (greenIntensity < 0.4) return 'text-red-500';
       if (greenIntensity < 0.6) return 'text-orange-500';
@@ -47,22 +47,33 @@ export const CarbonRating = ({
     return 'text-green-600';
   };
 
+  const getEcoLabel = () => {
+    if (clampedRating < 3.0) return 'Low Eco';
+    if (clampedRating < 4.0) return 'Moderate';
+    return 'Eco-Friendly';
+  };
+
   return (
     <div className="flex items-center gap-1">
       <div className="flex items-center">
         {[...Array(5)].map((_, index) => (
-          <Star
+          <Leaf
             key={index}
-            className={`${getSizeClasses()} ${getStarColor(index)} ${
+            className={`${getSizeClasses()} ${getLeafColor(index)} ${
               clampedRating > index ? 'fill-current' : ''
             }`}
           />
         ))}
       </div>
       {showNumber && (
-        <span className={`text-sm font-medium ${getRatingColor()}`}>
-          {clampedRating.toFixed(1)}
-        </span>
+        <div className="flex items-center space-x-1">
+          <span className={`text-sm font-medium ${getRatingColor()}`}>
+            {clampedRating.toFixed(1)}
+          </span>
+          <span className={`text-xs ${getRatingColor()}`}>
+            {getEcoLabel()}
+          </span>
+        </div>
       )}
     </div>
   );

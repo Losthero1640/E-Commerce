@@ -1,12 +1,17 @@
 import React from 'react';
 import { ShoppingCart, Plus, Truck, AlertTriangle, AlertCircle } from 'lucide-react';
 import { CarbonRating } from './CarbonRating';
+import { CustomerRating } from './CustomerRating';
 import { useCart } from '../contexts/CartContext';
 import { AlternativeSuggestions } from './AlternativeSuggestions';
 
 export const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
   const [showAlternatives, setShowAlternatives] = React.useState(false);
+  
+  // Generate mock customer rating and review count for demo
+  const customerRating = Math.min(5, Math.max(3.5, product.carbon_rating + (Math.random() * 1.5 - 0.5)));
+  const reviewCount = Math.floor(Math.random() * 500) + 50;
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
@@ -104,10 +109,24 @@ export const ProductCard = ({ product }) => {
             </p>
           </div>
 
-          {/* Carbon Rating */}
+          {/* Carbon Rating (Eco-Friendliness) */}
           <div className="mb-3">
-            <div className="flex items-center justify-between">
+            <div className="mb-2">
+              <div className="text-xs text-gray-500 mb-1">Carbon Footprint</div>
               <CarbonRating rating={product.carbon_rating} />
+            </div>
+            
+            {/* Customer Rating */}
+            <div className="mb-2">
+              <div className="text-xs text-gray-500 mb-1">Customer Reviews</div>
+              <CustomerRating 
+                rating={customerRating} 
+                reviewCount={reviewCount}
+                size="sm"
+              />
+            </div>
+            
+            <div className="flex items-center justify-between">
               <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
                 {product.category}
               </span>
