@@ -104,7 +104,7 @@ export const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
                 id: data.user.id,
                 email: data.user.email,
                 full_name: data.user.user_metadata?.full_name || formData.email.split('@')[0],
-                carbon_credits: 25 // Starting credits
+                carbon_credits: 250 // Starting credits (₹10 per credit)
               }])
               .select()
               .single();
@@ -150,7 +150,7 @@ export const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
               id: data.user.id,
               email: formData.email,
               full_name: formData.fullName,
-              carbon_credits: 25 // Starting credits
+              carbon_credits: 250 // Starting credits (₹10 per credit)
             }])
             .select()
             .single();
@@ -370,7 +370,7 @@ export const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
                 <div className="space-y-1 text-sm text-emerald-700">
                   <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-emerald-600 rounded-full"></div>
-                    <span>25 Carbon Credits to start</span>
+                    <span>250 Carbon Credits to start</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-emerald-600 rounded-full"></div>
