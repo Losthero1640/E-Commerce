@@ -64,36 +64,42 @@ export const CheckoutModal = ({ isOpen, onClose }) => {
   const getOffsetUrgencyInfo = () => {
     if (hasHighImpactItems) {
       return {
-        color: 'red',
-        bgColor: 'bg-red-50',
-        borderColor: 'border-red-200',
-        textColor: 'text-red-700',
+        color: "red",
+        bgColor: "bg-red-50",
+        borderColor: "border-red-200",
+        textColor: "text-red-700",
         icon: AlertTriangle,
-        title: 'High Carbon Impact Items Detected',
-        message: 'Your cart contains items with high carbon emissions. We strongly recommend offsetting to neutralize the environmental impact.',
-        buttonColor: 'bg-red-600 hover:bg-red-700'
+        title: "High Carbon Impact Items Detected It would help environment a lot for every small contribution u do towards offsetting",
+        message: `Your order emits ${totalCO2Emissions.toFixed(
+          1
+        )}g of CO₂ due to high-emission items. We strongly recommend offsetting to neutralize this environmental impact.`,
+        buttonColor: "bg-red-600 hover:bg-red-700",
       };
     } else if (hasModerateImpactItems) {
       return {
-        color: 'yellow',
-        bgColor: 'bg-yellow-50',
-        borderColor: 'border-yellow-200',
-        textColor: 'text-yellow-700',
+        color: "yellow",
+        bgColor: "bg-yellow-50",
+        borderColor: "border-yellow-200",
+        textColor: "text-yellow-700",
         icon: AlertCircle,
-        title: 'Moderate Carbon Impact',
-        message: 'Some items in your cart have moderate carbon emissions. Consider offsetting to reduce your environmental footprint.',
-        buttonColor: 'bg-yellow-600 hover:bg-yellow-700'
+        title: "Moderate Carbon Impact Let's Contribute to Offsetting",
+        message: `Your order emits ${totalCO2Emissions.toFixed(
+          1
+        )}g of CO₂ from shipping and moderate-impact items. Consider offsetting to reduce your environmental footprint.`,
+        buttonColor: "bg-yellow-600 hover:bg-yellow-700",
       };
     } else {
       return {
-        color: 'blue',
-        bgColor: 'bg-blue-50',
-        borderColor: 'border-blue-200',
-        textColor: 'text-blue-700',
+        color: "blue",
+        bgColor: "bg-blue-50",
+        borderColor: "border-blue-200",
+        textColor: "text-blue-700",
         icon: Heart,
-        title: 'Great Eco-Friendly Choices!',
-        message: 'Your cart contains eco-friendly items. You can still contribute to carbon offsetting to make an even bigger positive impact.',
-        buttonColor: 'bg-blue-600 hover:bg-blue-700'
+        title: "Make This Delivery Carbon-Neutral",
+        message: `Your order emits the actual carbon that it emits — in this case, it is ${totalCO2Emissions.toFixed(
+          1
+        )}g of CO₂. Offset that carbon through verified climate projects—real action toward a cleaner, safer planet.`,
+        buttonColor: "bg-blue-600 hover:bg-blue-700",
       };
     }
   };
