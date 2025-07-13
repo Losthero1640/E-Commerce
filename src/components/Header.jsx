@@ -159,6 +159,9 @@ export const Header = ({ onCartClick }) => {
                     <span className="text-emerald-600 text-sm">Credits</span>
                     <Gift className="w-3 h-3 text-emerald-500" />
                   </button>
+                  
+                  {/* Mobile Carbon Savings */}
+                  <CarbonSavingsWidget />
                 </div>
                 
                 {user && (
