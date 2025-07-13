@@ -101,7 +101,7 @@ export const Cart = ({ isOpen, onClose }) => {
                     <Award className="w-4 h-4 text-emerald-600" />
                     <span className="text-emerald-700 font-medium">Earn Credits:</span>
                   </div>
-                  <span className="text-emerald-600 font-bold">1 per ₹10 offset</span>
+                  <span className="text-emerald-600 font-bold">1 credit per ₹10 offset</span>
                 </div>
 
                 {/* Buttons */}

@@ -51,11 +51,11 @@ export const CheckoutModal = ({ isOpen, onClose }) => {
   // Suggested tip amounts based on cart impact
   const getSuggestedTips = () => {
     if (hasHighImpactItems) {
-      return [25, 50, 75, 100]; // Higher suggestions for high impact items
+      return [50, 100, 150, 200]; // Higher suggestions for high impact items
     } else if (hasModerateImpactItems) {
-      return [15, 25, 35, 50]; // Moderate suggestions
+      return [30, 50, 70, 100]; // Moderate suggestions
     } else {
-      return [5, 10, 15, 25]; // Lower suggestions for eco-friendly items
+      return [10, 20, 30, 50]; // Lower suggestions for eco-friendly items
     }
   };
 
@@ -224,23 +224,23 @@ export const CheckoutModal = ({ isOpen, onClose }) => {
                 {items.map((item) => (
                   <div key={item.id} className="flex justify-between text-sm">
                     <span>{item.product?.name} x{item.quantity}</span>
-                    <span>${((item.product?.price || 0) * item.quantity).toFixed(2)}</span>
+                    <span>₹{((item.product?.price || 0) * item.quantity).toFixed(2)}</span>
                   </div>
                 ))}
                 <div className="border-t pt-2">
                   <div className="flex justify-between text-sm">
                     <span>Subtotal</span>
-                    <span>${total.toFixed(2)}</span>
+                    <span>₹{total.toFixed(2)}</span>
                   </div>
                   {carbonOffsetTip > 0 && (
                     <div className="flex justify-between text-sm text-emerald-600">
                       <span>Carbon Offset Contribution</span>
-                      <span>+${carbonOffsetTip.toFixed(2)}</span>
+                      <span>+₹{carbonOffsetTip.toFixed(2)}</span>
                     </div>
                   )}
                   <div className="flex justify-between font-semibold mt-2 pt-2 border-t">
                     <span>Total</span>
-                    <span>${finalTotal.toFixed(2)}</span>
+                    <span>₹{finalTotal.toFixed(2)}</span>
                   </div>
                 </div>
               </div>
@@ -297,7 +297,7 @@ export const CheckoutModal = ({ isOpen, onClose }) => {
                             }`}
                             onClick={() => handleCarbonOffsetChange(amount)}
                           >
-                            ${amount}
+                            ₹{amount}
                           </button>
                         ))}
                       </div>
@@ -326,7 +326,7 @@ export const CheckoutModal = ({ isOpen, onClose }) => {
                         <div className="space-y-2">
                           <div className="flex items-center justify-between">
                             <p className={`text-xs ${offsetInfo.textColor}`}>
-                              Your ${carbonOffsetTip.toFixed(2)} contribution will support:
+                              Your ₹{carbonOffsetTip.toFixed(2)} contribution will support:
                             </p>
                             <div className="flex items-center space-x-1">
                               <Award className="w-3 h-3 text-emerald-600" />
@@ -462,7 +462,7 @@ export const CheckoutModal = ({ isOpen, onClose }) => {
               ) : (
                 <>
                   <CreditCard className="w-5 h-5" />
-                  <span>Complete Order - ${finalTotal.toFixed(2)}</span>
+                  <span>Complete Order - ₹{finalTotal.toFixed(2)}</span>
                 </>
               )}
             </button>

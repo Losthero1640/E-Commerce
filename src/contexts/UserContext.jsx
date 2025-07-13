@@ -12,7 +12,7 @@ export const useUser = () => {
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [carbonCredits, setCarbonCredits] = useState(25); // Starting with demo credits
+  const [carbonCredits, setCarbonCredits] = useState(250); // Starting with demo credits (₹10 per credit)
   const [redeemedRewards, setRedeemedRewards] = useState([]);
 
   // Load user data from localStorage on mount
@@ -29,7 +29,7 @@ export const UserProvider = ({ children }) => {
         id: 'demo-user',
         email: 'demo@ecomart.com',
         full_name: 'Demo User',
-        carbon_credits: 25
+        carbon_credits: 250
       };
       setUser(demoUser);
       localStorage.setItem('user', JSON.stringify(demoUser));

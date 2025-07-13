@@ -13,7 +13,7 @@ export const EcoCoinsBanner = ({ onRewardsClick, onCarbonSavingsClick }) => {
             <div>
               <h2 className="text-xl font-bold text-emerald-800">Earn Carbon Credits with Every Offset!</h2>
               <p className="text-emerald-700">
-                Contribute to carbon offsetting and earn credits for exclusive eco-friendly rewards and environmental impact.
+                Contribute to carbon offsetting and earn 1 credit for every ₹10 spent on offsetting for exclusive eco-friendly rewards.
               </p>
             </div>
           </div>
