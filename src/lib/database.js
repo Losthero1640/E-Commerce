@@ -249,3 +249,45 @@ export const getUserCarbonOffsets = async (userId) => {
   if (error) throw error;
   return data;
 };
+
+// Carbon Savings
+export const createCarbonSaving = async (savingData) => {
+  const { data, error } = await supabase
+    .from('carbon_savings')
+    .insert([savingData])
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+};
+
+export const getUserCarbonSavings = async (userId) => {
+  const { data, error } = await supabase
+    .from('carbon_savings')
+    .select(`
+      *,
+      products (name, image_url)
+    `)
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
+
+  if (error) throw error;
+  return data;
+};
+
+export const getGlobalImpactStats = async () => {
+  const { data, error } = await supabase
+    .from('global_impact_stats')
+    .select('*')
+    .single();
+
+  if (error) throw error;
+  return data;
+};
+
+export const updateGlobalImpactStats = async () => {
+  const { error } = await supabase.rpc('update_global_impact_stats');
+  if (error) throw error;
+  return true;
+};

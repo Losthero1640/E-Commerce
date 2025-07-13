@@ -159,7 +159,7 @@ export const ProductCard = ({ product }) => {
           <div className="flex items-center justify-between">
             <div>
               <span className="text-2xl font-bold text-gray-900">
-                ${product.price.toFixed(2)}
+                ₹{product.price.toFixed(2)}
               </span>
             </div>
             <button

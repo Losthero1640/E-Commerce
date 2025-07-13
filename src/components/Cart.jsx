@@ -52,7 +52,7 @@ export const Cart = ({ isOpen, onClose }) => {
                           <CarbonRating rating={item.product?.carbon_rating || 0} size="sm" />
                         </div>
                         <p className="text-green-600 font-semibold">
-                          ${(item.product?.price || 0).toFixed(2)}
+                          ₹{(item.product?.price || 0).toFixed(2)}
                         </p>
                       </div>
 
@@ -92,7 +92,7 @@ export const Cart = ({ isOpen, onClose }) => {
                 {/* Total */}
                 <div className="flex items-center justify-between text-lg font-semibold">
                   <span>Total:</span>
-                  <span>${total.toFixed(2)}</span>
+                  <span>₹{total.toFixed(2)}</span>
                 </div>
 
                 {/* Carbon Credits Info */}
@@ -101,7 +101,7 @@ export const Cart = ({ isOpen, onClose }) => {
                     <Award className="w-4 h-4 text-emerald-600" />
                     <span className="text-emerald-700 font-medium">Earn Credits:</span>
                   </div>
-                  <span className="text-emerald-600 font-bold">Through Carbon Offsetting</span>
+                  <span className="text-emerald-600 font-bold">1 per ₹10 offset</span>
                 </div>
 
                 {/* Buttons */}
