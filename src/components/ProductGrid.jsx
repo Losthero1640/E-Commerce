@@ -39,7 +39,7 @@ export const ProductGrid = () => {
       name: 'Solar Power Bank',
       description: 'Portable solar power bank for sustainable energy on the go',
       price: 49.99,
-      image_url: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.amazon.in%2F20000mAh-Portable-Carabiner-Flashlights-Accessory%2Fdp%2FB09M9RVLLZ&psig=AOvVaw1sPpfMwyM6G7Up6sAmeN94&ust=1753055288173000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCNibhIaOyo4DFQAAAAAdAAAAABAE',
+      image_url: 'https://m.media-amazon.com/images/I/81m0pwmlXKL.jpg',
       category: 'Electronics',
       carbon_rating: 4.2,
       stock_quantity: 15,
