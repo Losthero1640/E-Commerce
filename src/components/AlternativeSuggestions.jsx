@@ -45,7 +45,7 @@ export const AlternativeSuggestions = ({
         name: 'Solar LED Smart Bulb Pro',
         description: 'Advanced LED bulb with solar charging capability',
         price: 34.99,
-        image_url: 'https://images.pexels.com/photos/159397/solar-panel-array-power-sun-electricity-159397.jpeg?auto=compress&cs=tinysrgb&w=500',
+        image_url: 'https://images.pexels.com/photos/4164772/pexels-photo-4164772.jpeg?auto=compress&cs=tinysrgb&w=500',
         category: 'Electronics',
         carbon_rating: 4.6,
         stock_quantity: 25
@@ -55,7 +55,7 @@ export const AlternativeSuggestions = ({
         name: 'Eco-Friendly Wireless Charger',
         description: 'Bamboo wireless charger with energy-efficient technology',
         price: 44.99,
-        image_url: 'https://images.pexels.com/photos/4210614/pexels-photo-4210614.jpeg?auto=compress&cs=tinysrgb&w=500',
+        image_url: 'https://images.pexels.com/photos/1000084/pexels-photo-1000084.jpeg?auto=compress&cs=tinysrgb&w=500',
         category: 'Electronics',
         carbon_rating: 4.4,
         stock_quantity: 30
