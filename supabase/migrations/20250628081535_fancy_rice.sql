@@ -223,7 +223,7 @@ INSERT INTO products (name, description, price, image_url, category, carbon_rati
 ('Wireless Charging Pad', 'Eco-friendly bamboo wireless charging station', 39.99, 'https://images.pexels.com/photos/4526414/pexels-photo-4526414.jpeg', 'Electronics', 3.8, 30),
 
 -- Home & Garden
-('Bamboo Water Bottle', 'Eco-friendly bamboo water bottle with leak-proof design', 19.99, 'https://images.pexels.com/photos/4210614/pexels-photo-4210614.jpeg', 'Home & Garden', 5.0, 50),
+('Bamboo Water Bottle', 'Eco-friendly bamboo water bottle with leak-proof design', 19.99, 'hhttps://assets.myntassets.com/h_1440,q_100,w_1080/v1/assets/images/23669458/2024/5/2/b30340b0-c4b2-4e55-946d-a3669d5706691714623513589-Milton-Purple-Handy-850-Single-Walled-Stainless-Steel-Water--1.jpg', 'Home & Garden', 5.0, 50),
 ('Compost Bin', 'Indoor compost bin for kitchen scraps', 45.99, 'https://images.pexels.com/photos/4503273/pexels-photo-4503273.jpeg', 'Home & Garden', 4.9, 25),
 ('Solar Garden Lights', 'Set of 6 solar-powered garden lights', 34.99, 'https://images.pexels.com/photos/1108572/pexels-photo-1108572.jpeg', 'Home & Garden', 4.6, 35),
 ('Organic Plant Fertilizer', 'Natural plant fertilizer made from organic materials', 16.99, 'https://images.pexels.com/photos/4503270/pexels-photo-4503270.jpeg', 'Home & Garden', 4.8, 60),
